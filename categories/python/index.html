@@ -7,7 +7,7 @@
 
     
 
-    <title>pony&#39;s blog</title>
+    <title>Category: python | pony&#39;s blog</title>
     <meta name="author" content="pony" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
@@ -59,7 +59,7 @@
 
     <nav id="nav-inner" class="nav-inner">
         
-            <a class="nav-item active" href="/zsdlove.github.io/">
+            <a class="nav-item" href="/zsdlove.github.io/">
                 <span class="nav-text">home</span>
             </a>
         
@@ -183,7 +183,7 @@
         </h1>
         
         <div class="article-meta clearfix">
-            <a class="article-date" href="https://zsdlove.github.io/zsdlove.github.io/index.html">
+            <a class="article-date" href="https://zsdlove.github.io/zsdlove.github.io/categories/python/index.html">
     
     <i class="icon-calendar"></i>
     
@@ -261,42 +261,6 @@
 <p><strong>算法步骤:</strong><br>略</p>
 <p><strong>代码:</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">graph = &#123;<span class="string">'A'</span>: set([<span class="string">'B'</span>, <span class="string">'C'</span>]),</span><br><span class="line">         <span class="string">'B'</span>: set([<span class="string">'A'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>]),</span><br><span class="line">         <span class="string">'C'</span>: set([<span class="string">'A'</span>, <span class="string">'F'</span>]),</span><br><span class="line">         <span class="string">'D'</span>: set([<span class="string">'B'</span>]),</span><br><span class="line">         <span class="string">'E'</span>: set([<span class="string">'B'</span>, <span class="string">'F'</span>]),</span><br><span class="line">         <span class="string">'F'</span>: set([<span class="string">'C'</span>, <span class="string">'E'</span>])&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(graph, start)</span>:</span></span><br><span class="line">    visited, stack = set(), [start]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        vertex = stack.pop()</span><br><span class="line">        <span class="keyword">if</span> vertex <span class="keyword">not</span> <span class="keyword">in</span> visited:</span><br><span class="line">            visited.add(vertex)</span><br><span class="line">            stack.extend(graph[vertex] - visited)</span><br><span class="line">    <span class="keyword">return</span> visited</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">print</span> dfs(graph, <span class="string">'A'</span>) <span class="comment"># set(['A', 'C', 'B', 'E', 'D', 'F'])</span></span><br><span class="line">    </span><br><span class="line">路径搜索（dfs_paths）</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_paths</span><span class="params">(graph, start, goal)</span>:</span></span><br><span class="line">    stack = [(start, [start])]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        (vertex, path) = stack.pop()</span><br><span class="line">        <span class="keyword">for</span> next <span class="keyword">in</span> graph[vertex] - set(path):</span><br><span class="line">            <span class="keyword">if</span> next == goal:</span><br><span class="line">                <span class="keyword">yield</span> path + [next]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                stack.append((next, path + [next]))</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">print</span> list(dfs_paths(graph, <span class="string">'A'</span>, <span class="string">'F'</span>)) <span class="comment"># [['A', 'B', 'E', 'F'], ['A', 'C', 'F']]</span></span><br></pre></td></tr></table></figure>
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/zsdlove.github.io/2020/03/31/papers/">Welcome page</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="https://zsdlove.github.io/zsdlove.github.io/index.html">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2020-03-31T14:55:33.000Z" itemprop="datePublished">2020-03-31</time>
-</a>
-
-            
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <h2 id="一、papers"><a href="#一、papers" class="headerlink" title="一、papers"></a>一、papers</h2><p>0x1 <a href="https://www.freebuf.com/sectool/228762.html" target="_blank" rel="noopener">Hades开源白盒审计系统V1.0.0</a><br><strong>description</strong>:<br>This paper is Mainly about the design of static code vulnerability detection program.</p>
-<p>0x2 <a href="https://www.freebuf.com/articles/system/209652.html" target="_blank" rel="noopener">安全视角下的木马免杀技术讨论</a><br><strong>description</strong>:<br>This paper is mainly about the discussion of Trojan horse killing free technology.</p>
-<p>0x3 <a href="https://www.freebuf.com/articles/system/197136.html" target="_blank" rel="noopener">Kthrotlds挖矿病毒详细分析报告</a><br><strong>description</strong>:<br>Analysis of kthrotlds mining virus.</p>
-<p>0x4 <a href="https://www.freebuf.com/articles/terminal/180637.html" target="_blank" rel="noopener">浅谈APK安全及自动化审计</a><br><strong>description</strong>:<br>This paper is mainly about the Android vulnerability automated audit.</p>
-<h2 id="二、projects"><a href="#二、projects" class="headerlink" title="二、projects"></a>二、projects</h2><p>0x1 <a href="https://www.freebuf.com/articles/system/197136.html" target="_blank" rel="noopener">hades - a static code audit engine</a><br><strong>description</strong>:<br>a static code audit engine base on virtual execution and taint tracking technology.</p>
-<p>0x2 <a href="https://www.freebuf.com/articles/terminal/180637.html" target="_blank" rel="noopener">apkvulcheck - an android security audit tool</a><br><strong>description</strong>:<br>an android security audit tool.</p>
-<h2 id="三、aboutme"><a href="#三、aboutme" class="headerlink" title="三、aboutme"></a>三、aboutme</h2><p>I’m pony,a security researcher,my research directions includes static code audit engine,mobile security,windows reverse analysis,Trojan attack and Defense Technology.if you are instereted in security technology,i’m looking forward to your communication with me.</p>
-
         
     </section>
 </article>
