@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>pmd-framework-analysis | pony&#39;s blog</title>
+    <meta name="author" content="pony" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="0x1 PMD项目介绍pmd是一款开源的代码分析工具，他主要是通过给javacc输入各个语言对应的文法规则文件来生成各个语言对应的词法分析器和语法分析器，以此来获得相应的ast信息，然后再基于ast进行数据流的分析。通过pmd可以发现一些常见的程序漏洞，比如未使用的变量，不必要的对象创建等等，也可以通过自定义规则插件，支持一些sql注入，xss，命令执行等漏洞的检测。目前该项目已经支持了Java, JavaScript, Salesforce.com Apex and Visualforc..." />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+
+    
+    <link rel="alternate" href="/zsdlove.github.io/atom.xml" title="pony&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/zsdlove.github.io/images/favicon.ico">
+    
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'icomoon';
+        src: url("/zsdlove.github.io/fonts/icomoon.eot?q628ml");
+        src: url("/zsdlove.github.io/fonts/icomoon.eot?q628ml#iefix") format('embedded-opentype'),
+             url("/zsdlove.github.io/fonts/icomoon.ttf?q628ml") format('truetype'),
+             url("/zsdlove.github.io/fonts/icomoon.woff?q628ml") format('woff'),
+             url("/zsdlove.github.io/fonts/icomoon.svg?q628ml#icomoon") format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
+    
+<link rel="stylesheet" href="/zsdlove.github.io/css/style.css">
+
+
+    <!--[if lt IE 9]>
+    <style type="text/css">
+    .nav-inner {top:0;}
+    .author-meta {position:static;top:0;}
+    .search-form {height:36px;}
+    </style>
+    <script type="text/javascript" src="https://unpkg.com/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <![endif]-->
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+
+    <main class="app">
+        <header id="header" class="header clearfix">
+    <div id="nav" class="nav">
+    <div class="nav-mobile">
+        <button id="open-panel" class="open-panel nav-mobile-item"><i class="icon-documents"></i></button>
+        <h1 class="nav-mobile-title nav-mobile-item">pony&#39;s blog</h1>
+        <button id="open-menus" class="open-panel nav-mobile-item"><i class="icon-library"></i></button>
+    </div>
+
+    <nav id="nav-inner" class="nav-inner">
+        
+            <a class="nav-item" href="/zsdlove.github.io/">
+                <span class="nav-text">home</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/Trojan">
+                <span class="nav-text">trojan</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/windowskernel">
+                <span class="nav-text">kernel</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/androidreverse">
+                <span class="nav-text">android</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/python">
+                <span class="nav-text">python</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/Java">
+                <span class="nav-text">java</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/CPP">
+                <span class="nav-text">c++</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/llvm">
+                <span class="nav-text">llvm</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/Hades">
+                <span class="nav-text">hades</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/archives">
+                <span class="nav-text">archives</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/atom.xml">
+                <span class="nav-text">follow</span>
+            </a>
+        
+            <a class="nav-item" href="/zsdlove.github.io/about">
+                <span class="nav-text">about</span>
+            </a>
+        
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="https://zsdlove.github.io/zsdlove.github.io"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x1-PMD项目介绍"><span class="toc-number">1.</span> <span class="toc-text">0x1 PMD项目介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x2-PMD工作原理"><span class="toc-number">2.</span> <span class="toc-text">0x2 PMD工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x3-项目编译"><span class="toc-number">3.</span> <span class="toc-text">0x3 项目编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x4-本地调试环境配置"><span class="toc-number">4.</span> <span class="toc-text">0x4 本地调试环境配置</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content">
+            <div id="wrapper" class="wrapper" style="max-width: 800px">
+                <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            pmd-framework-analysis
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="https://zsdlove.github.io/zsdlove.github.io/2020/04/09/pmd-framework-analysis/index.html">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2020-04-09T08:35:31.000Z" itemprop="datePublished">2020-04-09</time>
+</a>
+
+            
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <h3 id="0x1-PMD项目介绍"><a href="#0x1-PMD项目介绍" class="headerlink" title="0x1 PMD项目介绍"></a>0x1 PMD项目介绍</h3><p>pmd是一款开源的代码分析工具，他主要是通过给javacc输入各个语言对应的文法规则文件来生成各个语言对应的词法分析器和语法分析器，以此来获得相应的ast信息，然后再基于ast进行数据流的分析。通过pmd可以发现一些常见的程序漏洞，比如未使用的变量，不必要的对象创建等等，也可以通过自定义规则插件，支持一些sql注入，xss，命令执行等漏洞的检测。目前该项目已经支持了Java, JavaScript, Salesforce.com Apex and Visualforce, Modelica, PLSQL, Apache Velocity, XML, XSL, Scala等语言的漏洞检测。另外，pmd支持C/C++, C#, Dart, Fortran, Go, Groovy, Java, JavaScript, JSP, Kotlin, Lua, Matlab, Modelica, Objective-C, Perl, PHP, PLSQL, Python, Ruby, Salesforce.com Apex, Scala, Swift and Visualforce的重复代码块的检测（即copy pasted detect）。通过pmd，我们可以获得各种语言多ast语法树，基于ast语法树做一些分析处理也不失去为一种好方法。当然，我比较倾向的做法是，解析ast，并提取我们关注的信息存储到控制流图中，进行后续的污点分析。这是我接下来想搞的一个东西，所以现在需要对pmd进行一个比较深入分析，了解它能做什么，已经做了什么，以及我还需要完善的点。</p>
+<h3 id="0x2-PMD工作原理"><a href="#0x2-PMD工作原理" class="headerlink" title="0x2 PMD工作原理"></a>0x2 PMD工作原理</h3><p>下面是针对pmd运行起来主要做的一些工作的分析整理。</p>
+<ol>
+<li>解析命令行输入参数,具体处理在如下包名路径：<br>net.sourceforge.pmd.cli.PMDParameters </li>
+<li>加载 rulesets/rules 下的规则</li>
+<li>识别待分析的语言类型</li>
+<li>识别文件</li>
+<li>按照文件名排序</li>
+<li>检测我们是否可以使用增量分析缓存</li>
+<li>基于配置选择相应的源码分析处理器</li>
+<li>文件分析:<br>  1、创建输入流<br>  2、调用源码处理器  //具体处理路径在net.sourceforge.pmd.SourceCodeProcessor<pre><code>1、识别语言
+2、检测文件是否已经被分析&amp;是否能够从缓存中获取目标文件的结果信息。
+3、解析源码。结果是ast root节点
+4、 运行SymbolFacade visitor.他的工作是构建scopes，寻找声明信息和使用信息
+5、运行DFA，用于构建控制流图和数据流节点
+6、运行类型解析(如果有规则需要用到它)
+7、运行混合文件分析（应该是文件间的分析）
+8、执行规则。运行所有规则插件，规则插件可以遍历AST语法树&amp;可以使用符号表，类型解析信息和DFA节点。规则插件将发现的问题作为违规项进行报告。</code></pre></li>
+<li>将这些找到的违规项渲染成想要的格式。</li>
+<li>存储新增的分析缓存</li>
+<li>根据找到的分析的数量，以0或4进行结束。<h3 id="0x3-项目编译"><a href="#0x3-项目编译" class="headerlink" title="0x3 项目编译"></a>0x3 项目编译</h3>pmd 项目地址：<a href="https://github.com/pmd/pmd/" target="_blank" rel="noopener">https://github.com/pmd/pmd/</a><br>官方命令:<br>linux or macos<br>./mvnw clean verify<br>mvnw.cmd clean verify<br>构建项目的时候回记性codestyle检查，有好几百处检查不通过，所以这里如果想编译通过的话，需要<br>加上-Dcheckstyle.skip=true来跳过checkstyle，另外测试也可以跳过，加上 -Dmaven.test.skip=true即可，而pmd-lang-test应该是一个测试用的demo，也可以不用编译，直接-rf去除即可。<br>编译命令：mvn package -Dmaven.test.skip=true -Dcheckstyle.skip=true -rf pmd-lang-test<br>一切顺利的话，你将看到如下界面:<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/1.jpg" alt="markdown" title="图片1"><h3 id="0x4-本地调试环境配置"><a href="#0x4-本地调试环境配置" class="headerlink" title="0x4 本地调试环境配置"></a>0x4 本地调试环境配置</h3>这里以inteliJ idea为例。pmd使用maven项目管理，由于我们已经在本地maven进行了编译，项目所依赖的包都已经下载到了本地的maven库，所以，这里我们只要将inteliJ idea的maven库路径配置为我们本地的maven仓库路径即可。<br>那么如何启动项目呢？在pmd-dist目录下有一个pmd.bat执行文件。<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/2.jpg" alt="markdown" title="图片1"><br>以下是pmd.bat 内容<br>@echo off<br>set TOPDIR=%~dp0..<br>set OPTS=<br>set MAIN_CLASS=net.sourceforge.pmd.PMD<br>java %PMD_JAVA_OPTS% -classpath “%TOPDIR%\lib*“ %OPTS% %MAIN_CLASS% %*<br>通过分析这个启动脚本，不难发现，其主的入口类为net.sourceforge.pmd.PMD<br>所以我们定位到pmd-core这个核心包中，执行下其main函数看看是否能够编译执行成功。<br>unfortunately，编译执行失败。这是因为pmd-core中缺失了一个叫做TokenMgrError的类，应该是作者在push代码的时候忘记了（故意设置一个门槛？），具体的路径是：<br>net.sourceforge.pmd.lang.ast.TokenMgrError<br>在pmd-core中有多处引用了TokenMgrError。看起来是一个异常处理的类，解决方法有两个，一个是直接去掉所有TokenMgrError的引用，另一种是自己写一个TokenMgrError类。这里前者是不推荐的，因为工作量太大，遇到这种情况，我比较倾向于后者。当然，这里通过搜搜，在pmd-vm中找到了一个同名的类，既然是同名的，那么函数结构应该类似，直接将这个同名类修改一下，放到pmd-core中即可解决该问题。<br>下面是执行PMD.main函数后正常编译执行后的输出:<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/3.jpg" alt="markdown" title="图片1"><br>下面我们再跑一下java相关的一些测试demo，在pmd-java/src/test下<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/4.jpg" alt="markdown" title="图片1"><br>在CLITest这个测试类中，作者已经写了一些测试demo，本地测试跑了一下，没有问题，能够跑通。<br>下面我们对其中的一个测试demo进行debug，了解一下pmd的工作原理。<br>@Test<br>public void minimalArgs() {<br>String[] args = { “-d”, SOURCE_FOLDER, “-f”, “text”, “-R”, “category/java/bestpractices.xml,category/java/design.xml”, };<br>runTest(args, “minimalArgs”);<br>}<br>这里我们为-R指令传了两个规则，并且指定了输出为text格式。<br>测试的java文件为：<br>public class EmptyIfStatement {<br>public void foo() {<pre><code>if (1 == 2) { }</code></pre>}<br>}<br>这里pmd-java最终会调用pmd-core的pmd对命令行输入进行处理。这里是解析命令行参数后获得的配置对象信息，命令命令行的参数会存储到cinfiguration中。<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/5.jpg" alt="markdown" title="图片1"><br>调用dopmd函数进行规则加载和分析。<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/6.jpg" alt="markdown" title="图片1"><br>加载规则<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/7.jpg" alt="markdown" title="图片1"><br>获取待分析的目标文件<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/8.jpg" alt="markdown" title="图片1"><br>这里声明一个render对象，用于整理结果信息。<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/9.jpg" alt="markdown" title="图片1"><br>接着走到abstractPMDProcessor.java类下的processfile函数进行处理。<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/10.jpg" alt="markdown" title="图片1"><br>代码如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public void processFiles(RuleSetFactory ruleSetFactory, List&lt;DataSource&gt; files, RuleContext ctx,</span><br><span class="line">        List&lt;Renderer&gt; renderers) &#123;</span><br><span class="line">    final RuleSets rs &#x3D; createRuleSets(ruleSetFactory, ctx.getReport());</span><br><span class="line">    configuration.getAnalysisCache().checkValidity(rs, configuration.getClassLoader());</span><br><span class="line">    final SourceCodeProcessor processor &#x3D; new SourceCodeProcessor(configuration);</span><br><span class="line"></span><br><span class="line">    for (final DataSource dataSource : files) &#123;</span><br><span class="line">        &#x2F;&#x2F; this is the real, canonical and absolute filename (not shortened)</span><br><span class="line">        String realFileName &#x3D; dataSource.getNiceFileName(false, null);</span><br><span class="line"></span><br><span class="line">        runAnalysis(new PmdRunnable(dataSource, realFileName, renderers, ctx, rs, processor));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+主要是对源码文件进行迭代分析处理。<br>这里对源码的分析处理采用了多线程机制进行并发处理，提升程序运行效率。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void runAnalysis(PmdRunnable runnable) &#123;</span><br><span class="line">    completionService.submit(runnable);</span><br><span class="line">    submittedTasks++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+然后根据配置文件来选择源码处理器<br><img src="https://raw.githubusercontent.com/zsdlove/zsdlove.github.io/master/images/11.jpg" alt="markdown" title="图片1"><br>源码如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">private void processSource(Reader sourceCode, RuleSets ruleSets, RuleContext ctx) &#123;</span><br><span class="line">    LanguageVersion languageVersion &#x3D; ctx.getLanguageVersion();</span><br><span class="line">    LanguageVersionHandler languageVersionHandler &#x3D; languageVersion.getLanguageVersionHandler();</span><br><span class="line">    Parser parser &#x3D; PMD.parserFor(languageVersion, configuration);</span><br><span class="line">    Node rootNode &#x3D; parse(ctx, sourceCode, parser);</span><br><span class="line">    resolveQualifiedNames(rootNode, languageVersionHandler);</span><br><span class="line">    symbolFacade(rootNode, languageVersionHandler);</span><br><span class="line">    Language language &#x3D; languageVersion.getLanguage();</span><br><span class="line">    usesDFA(languageVersion, rootNode, ruleSets, language);</span><br><span class="line">    usesTypeResolution(languageVersion, rootNode, ruleSets, language);</span><br><span class="line">    usesMultifile(rootNode, languageVersionHandler, ruleSets, language);</span><br><span class="line">    List&lt;Node&gt; acus &#x3D; Collections.singletonList(rootNode);</span><br><span class="line">    ruleSets.apply(acus, ctx, language);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这里的主要工作是通过输入ast信息&amp;规则信息&amp;语言类型，进行：<br>1、dfa分析，即数据流分析<br>2、类型解析<br>3、多文件分析</li>
+</ol>
+<p>pmd项目整体的工作原理如上，下一篇将对pmd的dfa部分进行分析。</p>
+
+        
+    </section>
+</article>
+
+
+
+<a id="pagenext" href="/zsdlove.github.io/2020/04/01/algorithm/" class="article-next" title="一些常见的经典算法"><i class="icon-arrow-right"></i></a>
+
+
+
+
+<div class="comments">
+    <div id="comments"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+    new Gitalk({
+        clientID: "",
+        clientSecret: "",
+        repo: "zsdlove.github.io",
+        owner: "pony",
+        admin: ["pony"],
+        id: "2020/04/09/pmd-framework-analysis",
+        distractionFreeMode: true,
+        title: "pmd-framework-analysis",
+        body: "https://zsdlove.github.io/zsdlove.github.io/2020/04/09/pmd-framework-analysis/",
+        labels: []
+    }).render('comments');
+    </script>
+</div>
+
+
+            </div>
+        </div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+
+    
+</footer>
+
+    </main>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var nodes = {
+            nav: $('#nav'),
+            aside: $('#aside'),
+            asideInner: $('#aside-inner'),
+            navInner: $('#nav-inner')
+        };
+
+        var doing = false;
+        nodes.asideInner.on('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend', function() {
+            if (nodes.aside.hasClass('mobile-open')) {
+                nodes.aside.removeClass('mobile-open');
+            } else {
+                nodes.aside.removeClass('mobile-close panel-show');
+            }
+            doing = false;
+        });
+        $('#open-panel, #aside-mask').on('click', function() {
+            if (doing) {
+                return;
+            }
+
+            if (nodes.aside.hasClass('panel-show')) {
+                nodes.aside.addClass('mobile-close');
+            } else {
+                nodes.aside.addClass('mobile-open panel-show');
+            }
+        });
+        $('#open-menus').on('click', function() {
+            nodes.navInner.slideToggle();
+        });
+
+        if (window.innerWidth <= 960) {
+            setTimeout(function() {
+                nodes.navInner.slideUp();
+            }, 3000);
+        }
+    });
+    </script>
+    
+        
+<script src="/zsdlove.github.io/js/scrollspy.min.js"></script>
+
+        <script type="text/javascript">
+        $(document.body).scrollspy({target: '#aside-inner'});
+
+        $(window).on('resize', function() {
+            var hw = $('#header').width();
+            var ww = $('#wrapper').width();
+            var space = ($(this).width() - hw - ww) / 2 / 2;
+
+            var pageprev = $('#pageprev');
+            var pagenext = $('#pagenext');
+            var avg = (pageprev.width() + pagenext.width()) / 2
+
+            if(space > avg) {
+                var len = space - avg / 2;
+                var styles = {position: 'fixed', top: '50%', marginTop: - (pageprev.width() + pagenext.width()) / 4}
+                pageprev.css($.extend({left: hw + len}, styles));
+                pagenext.css($.extend({right: len}, styles));
+            } else {
+                pageprev.removeAttr('style');
+                pagenext.removeAttr('style');
+            }
+        }).trigger('resize');
+        </script>
+    
+
+</body>
+</html>
