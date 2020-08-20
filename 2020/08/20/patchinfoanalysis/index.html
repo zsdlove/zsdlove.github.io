@@ -189,7 +189,7 @@ http://127.0.0.1:8080/hello/%3Bpony
 首先来到shiro的getchain函数中</p>
 
 <p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/shirohandle.jpeg?raw=true" alt="markdown" title="图片1"></p><br>可以看到这里对uri进行了截断，获取分号之前对内容，即/hello/。</p><br>接着来到spring的decodeandcleanuristring函数中</p>
-<p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/springhanndle.jpeg?raw=true" alt="markdown" title="图片1"></p><br>这里由于uri中对分号进行了编码，即%3B，从而bypass了removesemicolomcontent的截断，在decodeRequestString中对uri进行了解码，最终<br>uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。</p>
+<p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/springhanndle.jpeg?raw=true" alt="markdown" title="图片1"></p><br><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/ss.jpeg?raw=true" alt="markdown" title="图片1"></p><br>这里由于uri中对分号进行了编码，即%3B，从而bypass了removesemicolomcontent的截断，在decodeRequestString中对uri进行了解码，最终<br>uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。</p>
 <h3 id="0x5-总结"><a href="#0x5-总结" class="headerlink" title="0x5 总结"></a>0x5 总结</h3><p>0x1 shiro对hello/%3Bpony进行了解码，获得hello/;pony,然后以分号为界限进行了截断，只剩下hello/，这里就绕过了shiro对权限校验。</p><br>0x2 spring在处理uri的时候，由于是先调用removesemicolomcontent函数对uri进行分析处理，如果存在分号则取分号前面的内容，然后再调用decodeRequestString进行解码的，所以这里就bypass过了spring的分号截断，从而使得最后的uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。</p><br>0x3 编码在bypass过程中还是很常用的。</p>
 </p>
 
