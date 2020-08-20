@@ -179,6 +179,77 @@
     <header class="article-header">
         
         <h1 itemprop="name">
+            <a href="/zsdlove.github.io/2020/08/20/patchinfoanalysis/">apache shira 权限绕过漏洞补丁分析</a>
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="https://zsdlove.github.io/zsdlove.github.io/index.html">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2020-08-20T04:34:33.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/zsdlove.github.io/tags/algorithm/" rel="tag">algorithm</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/apache/shiro" target="_blank" rel="noopener">https://github.com/apache/shiro</a></p>
+<h3 id="漏洞详情通告"><a href="#漏洞详情通告" class="headerlink" title="漏洞详情通告"></a>漏洞详情通告</h3><p>近日，蚂蚁非攻实验室发现针对之前Apache Shiro身份验证绕过漏洞CVE-2020-11989的修复补丁存在缺陷，在1.5.3及其之前的版本，由于shiro在处理url时与spring仍然存在差异，依然存在身份校验绕过漏洞。2020年8月17日，Apache Shiro官方接收漏洞报告并发布1.6.0修复版本，CVE编号：CVE-2020-13933</p>
+<h3 id="补丁分析"><a href="#补丁分析" class="headerlink" title="补丁分析"></a>补丁分析</h3><h4 id="0x1-找到release处，看changelog信息"><a href="#0x1-找到release处，看changelog信息" class="headerlink" title="0x1 找到release处，看changelog信息"></a>0x1 找到release处，看changelog信息</h4><p>根据官方通告我们知道，漏洞是出现在1.5.3及之前版本中的，而在1.6.0中对其进行了修复。那么我们直接对比下1.6.0和1.5.3之间的差异即可。<br><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/select.jpeg?raw=true" alt="markdown" title="图片1"></p>
+<p>通过分析change log可以发现，这里是通过添加一个过滤器来阻止一些不合法的请求</p>
+<p>Adds new filter to block invalid requests</p>
+![markdown2](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/changeloginfo.jpeg?raw=true "图片2")
+对应的这个过滤器应该就是这个InvalidRequestFilter类了
+<p>web/src/main/java/org/apache/shiro/web/filter/InvalidRequestFilter.java</p>
+![markdown2](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/patch.png?raw=true "图片2")
+过滤类中针对分号和反斜杆进行了过滤
+
+<h3 id="尝试构造payload"><a href="#尝试构造payload" class="headerlink" title="尝试构造payload"></a>尝试构造payload</h3><p>根据补丁信息尝试进行payload构造。这里我们需要有一个调试环境。可通过网上已有的shiro结合spring的一个demo进行漏洞的复现。<br>demo地址:<a href="https://github.com/lenve/javaboy-code-samples/tree/master/shiro/shiro-basic" target="_blank" rel="noopener">https://github.com/lenve/javaboy-code-samples/tree/master/shiro/shiro-basic</a><br>这里需要对这个demo进行修改，具体改两个地方：<br>1、shiroconfig类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function">ShiroFilterFactoryBean <span class="title">shiroFilterFactoryBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ShiroFilterFactoryBean bean = <span class="keyword">new</span> ShiroFilterFactoryBean();</span><br><span class="line">    <span class="comment">//指定 SecurityManager</span></span><br><span class="line">    bean.setSecurityManager(securityManager());</span><br><span class="line">    <span class="comment">//登录页面</span></span><br><span class="line">    bean.setLoginUrl(<span class="string">"/login"</span>);</span><br><span class="line">    <span class="comment">//登录成功页面</span></span><br><span class="line">    bean.setSuccessUrl(<span class="string">"/index"</span>);</span><br><span class="line">    <span class="comment">//访问未获授权路径时跳转的页面</span></span><br><span class="line">    bean.setUnauthorizedUrl(<span class="string">"/unauthorizedurl"</span>);</span><br><span class="line">    <span class="comment">//配置路径拦截规则，注意，要有序</span></span><br><span class="line">    Map&lt;String, String&gt; map = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">    <span class="comment">//map.put("/doLogin", "anon");</span></span><br><span class="line">    map.put(<span class="string">"/hello/*"</span>, <span class="string">"authc"</span>);</span><br><span class="line">    bean.setFilterChainDefinitionMap(map);</span><br><span class="line">    <span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、logincontroller类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;&#x2F;hello&#x2F;&#123;name&#125;&quot;)</span><br><span class="line">public String hello(@PathVariable String name) &#123;</span><br><span class="line">    return &quot;hello&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3、pom中修改下shiro版本，这里我们要测试的是1.5.3版本的绕过，所以shiro版本设置为1.5.3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;shiro-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.5.3&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;shiro-spring&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.5.3&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>4、重新编译一下项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip&#x3D;true</span><br></pre></td></tr></table></figure>
+<h3 id="调试分析"><a href="#调试分析" class="headerlink" title="调试分析"></a>调试分析</h3><p>这里需要注意下是，在调试的时候要记得设定intelij idea 自动导包，否则会发生使用之前版本的shiro，从而导致分析错误。</p>
+<p>在处理uri的地方进行下断点，以便于分析shiro对于用户传入的uri地址是如何进行获取的。</p>
+<p>这里根据之前版本的漏洞调试经验，我们直接在getchain函数下断即可</p>
+通过前面的版本的漏洞分析我们知道，可以使用分号进行uri截断。</p>
+假设我们构造:http://127.0.0.1:8080/hello/; </p>
+那么在shiro中，获取到的uri就是/hello/显然是不在shiro权限校验之内的，但是同时spring也匹配不到这条uri，所以这样明显是不行的。</p>
+而我们看到官方的修复中，针对分号进行了校验，那么我们有理由相信，这里可以对分号做点文章。</p>
+基于此，我们可以尝试构造:
+http://127.0.0.1:8080/hello/%3Bpony
+下面看调试过程
+首先来到shiro的getchain函数中
+![markdown](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/sirohandle.jpeg?raw=true "图片1")
+可以看到这里对uri进行了截断，获取分号之前对内容，即/hello/。
+
+<p>接着来到spring的decodeandcleanuristring函数中<br><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/springhandle.jpeg?raw=true" alt="markdown" title="图片1"><br>这里由于uri中对分号进行了编码，即%3B，从而bypass了removesemicolomcontent的截断，在decodeRequestString中对uri进行了解码，最终<br>uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>0x1 shiro对hello/%3Bpony进行了解码，获得hello/;pony,然后以分号为界限进行了截断，只剩下hello/，这里就绕过了shiro对权限校验。<br>0x2 spring在处理uri的时候，由于是先调用removesemicolomcontent函数对uri进行分析处理，如果存在分号则取分号前面的内容，然后再调用decodeRequestString进行解码的，所以这里就bypass过了spring的分号截断，从而使得最后的uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。<br>0x3 编码在bypass过程中还是很常用的。</p>
+</p>
+
+
+        
+    </section>
+</article>
+
+
+    <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
             <a href="/zsdlove.github.io/2020/04/09/pmd-framework-analysis/">pmd-framework-analysis</a>
         </h1>
         
@@ -236,7 +307,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Start node</span><br><span class="line">DataFlowNode: line 2, (method) &#x2F;&#x2F;void bar(int x)</span><br><span class="line">DataFlowNode: line 3, (FOR_INIT), ASTVariableDeclarator &#x2F;&#x2F;int i&#x3D;0;</span><br><span class="line">DataFlowNode: line 3, (FOR_EXPR), ASTExpression  &#x2F;&#x2F;i&lt;10</span><br><span class="line">DataFlowNode: line 3, (FOR_UPDATE)(FOR_BEFORE_FIRST_STATEMENT)(FOR_END), ASTStatementExpression&#x2F;&#x2F;i++</span><br><span class="line">DataFlowNode: line 3, (FOR_EXPR), ASTExpression &#x2F;&#x2F;i&lt;10</span><br><span class="line">DataFlowNode: line 3, (FOR_UPDATE)(FOR_BEFORE_FIRST_STATEMENT)(FOR_END), ASTStatementExpression&#x2F;&#x2F;j--</span><br><span class="line">DataFlowNode: line 3, (FOR_EXPR), ASTExpression  &#x2F;&#x2F;i&lt;10</span><br><span class="line">End node</span><br></pre></td></tr></table></figure>
 <p>第三条</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Start node</span><br><span class="line">DataFlowNode: line 2, (method)  &#x2F;&#x2F;void bar(int x)</span><br><span class="line">DataFlowNode: line 3, (FOR_INIT), ASTVariableDeclarator   &#x2F;&#x2F;int i&#x3D;0;</span><br><span class="line">DataFlowNode: line 3, (FOR_EXPR), ASTExpression &#x2F;&#x2F;i&lt;10</span><br><span class="line">End node</span><br></pre></td></tr></table></figure>
-<p>每一条数据流路径由startnode开始，end node结束。<br>第一条数据流路径包括了for循环的init&amp;expr&amp;update&amp;body四个部分。<br>第二条数据流路径包括了for循环的init&amp;expr&amp;update三个部分。<br>第三条数据流路径包括了for循环的init&amp;expr两个部分。<br>pmd针对数据流中的loop情况，会对loop遍历0～2次。第一条数据流和第二条数据流中存在loop，从输出的结果可以看出，pmd这里确实对其进行了两次遍历。<br>数据流路径查找对主要逻辑在DAAPathFinder类中做的，主要的构建工作由phase1，phase2，phase3这三个函数完成，phase1的工作是进行路径构建的初始化，<br>phase2的工作是路径构建，phase3的工作是分解路径，直到找到一个未遍历所有分支的节点。phase1和phase2中限定了数据流路径数以及loop数，以避免数据流<br>分析过程中的路径异常问题。</p>
+<p>每一条数据流路径由startnode开始，end node结束。<br>第一条数据流路径包括了for循环的init&amp;expr&amp;update&amp;body四个部分。<br>第二条数据流路径包括了for循环的init&amp;expr&amp;update三个部分。<br>第三条数据流路径包括了for循环的init&amp;expr两个部分。<br>pmd针对数据流中的loop情况，会对loop遍历0～2次。第一条数据流和第二条数据流中存在loop，从输出的结果可以看出，pmd这里确实对其进行了两次遍历。<br>数据流路径查找对主要逻辑在DAAPathFinder类中做的，主要的构建工作由phase1，phase2，phase3这三个函数完成，phase1的工作是进行路径构建的初始化，<br>phase2的工作是路径构建，phase3的工作是分解路径，直到找到一个未遍历所有分支的节点。phase1和phase2中限定了数据流路径数以及loop数，以避免数据流<br>分析过程中的路径异常问题。<br>那么pmd具体是如何构建数据流的呢？我们从StatementAndBraceFinder类中的buildDataFlowFor函数开始分析，这里是开始构建数据流的地方。<br>this.dataFlow.createStartNode(node.getBeginLine());-&gt;<br>linker.computePaths()-&gt;   computepaths的主要作用是创建数据流节点之间的所有的连接</p>
+<p>owasp<br><a href="https://owasp.org/www-chapter-belgium/assets/2013/2013-06-06/Securing_Development_with_PMD_-_Teaching_an_Old_Dog_New_Tricks_-_OWASP.pdf" target="_blank" rel="noopener">https://owasp.org/www-chapter-belgium/assets/2013/2013-06-06/Securing_Development_with_PMD_-_Teaching_an_Old_Dog_New_Tricks_-_OWASP.pdf</a></p>
+<p>1、针对数据流分析的实现思路<br>dfasecuritfyrule调用链：<br>execute<br>    -&gt;handleDataFlowNode<br>        -&gt;handleVariableReference<br>                -&gt;isMethodCall<br>                    -&gt;isSource<br>                    -&gt;isSink<br>                        -&gt;analyzeMethodArgs<br>                            -&gt;isTaintedVariable<br>                    -&gt;isPassThrough<br>        -&gt;handleVariableDefinition<br>            -&gt;analyzeNode<br>                -&gt;isMethodCall<br>                    -&gt;isSource<br>                    -&gt;isSink<br>                        -&gt;analyzeMethodArgs<br>                            -&gt;isTaintedVariable<br>                    -&gt;isPassThrough<br>                -&gt;analyzeVariable<br>                    -&gt;<br>            -&gt;handleConditionalExpression<br>                -&gt;analyzeNode<br>                    -&gt;analyzeVariable<br>                        -&gt;isTaintedVariable</p>
 
         
     </section>
