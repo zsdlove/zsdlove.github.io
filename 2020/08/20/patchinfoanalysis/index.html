@@ -10,7 +10,7 @@
     <title>apache shira 权限绕过漏洞补丁分析 | pony&#39;s blog</title>
     <meta name="author" content="pony" />
     <meta name="keywords" content="" />
-    <meta name="description" content="项目地址https://github.com/apache/shiro漏洞详情通告近日，蚂蚁非攻实验室发现针对之前Apache Shiro身份验证绕过漏洞CVE-2020-11989的修复补丁存在缺陷，在1.5.3及其之前的版本，由于shiro在处理url时与spring仍然存在差异，依然存在身份校验绕过漏洞。2020年8月17日，Apache Shiro官方接收漏洞报告并发布1.6.0修复版本，CVE编号：CVE-2020-13933补丁分析0x1 找到release处，看chang..." />
+    <meta name="description" content="0x0 项目地址https://github.com/apache/shiro0x1 漏洞详情通告近日，蚂蚁非攻实验室发现针对之前Apache Shiro身份验证绕过漏洞CVE-2020-11989的修复补丁存在缺陷，在1.5.3及其之前的版本，由于shiro在处理url时与spring仍然存在差异，依然存在身份校验绕过漏洞。2020年8月17日，Apache Shiro官方接收漏洞报告并发布1.6.0修复版本，CVE编号：CVE-2020-139330x2 补丁分析根据官方通告我们知..." />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
 
@@ -121,7 +121,7 @@
         
 
         
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#项目地址"><span class="toc-number">1.</span> <span class="toc-text">项目地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#漏洞详情通告"><span class="toc-number">2.</span> <span class="toc-text">漏洞详情通告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#补丁分析"><span class="toc-number">3.</span> <span class="toc-text">补丁分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x1-找到release处，看changelog信息"><span class="toc-number">3.1.</span> <span class="toc-text">0x1 找到release处，看changelog信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试环境配置"><span class="toc-number">4.</span> <span class="toc-text">调试环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试分析"><span class="toc-number">5.</span> <span class="toc-text">调试分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x0-项目地址"><span class="toc-number">1.</span> <span class="toc-text">0x0 项目地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x1-漏洞详情通告"><span class="toc-number">2.</span> <span class="toc-text">0x1 漏洞详情通告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x2-补丁分析"><span class="toc-number">3.</span> <span class="toc-text">0x2 补丁分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x3-调试环境配置"><span class="toc-number">4.</span> <span class="toc-text">0x3 调试环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x4-调试分析"><span class="toc-number">5.</span> <span class="toc-text">0x4 调试分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x5-总结"><span class="toc-number">6.</span> <span class="toc-text">0x5 总结</span></a></li></ol>
         
     </div>
 </aside>
@@ -158,19 +158,17 @@
     
     <section class="article-body markdown-body">
         
-        <h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/apache/shiro" target="_blank" rel="noopener">https://github.com/apache/shiro</a></p>
-<h3 id="漏洞详情通告"><a href="#漏洞详情通告" class="headerlink" title="漏洞详情通告"></a>漏洞详情通告</h3><p>近日，蚂蚁非攻实验室发现针对之前Apache Shiro身份验证绕过漏洞CVE-2020-11989的修复补丁存在缺陷，在1.5.3及其之前的版本，由于shiro在处理url时与spring仍然存在差异，依然存在身份校验绕过漏洞。2020年8月17日，Apache Shiro官方接收漏洞报告并发布1.6.0修复版本，CVE编号：CVE-2020-13933</p>
-<h3 id="补丁分析"><a href="#补丁分析" class="headerlink" title="补丁分析"></a>补丁分析</h3><h4 id="0x1-找到release处，看changelog信息"><a href="#0x1-找到release处，看changelog信息" class="headerlink" title="0x1 找到release处，看changelog信息"></a>0x1 找到release处，看changelog信息</h4><p>根据官方通告我们知道，漏洞是出现在1.5.3及之前版本中的，而在1.6.0中对其进行了修复。那么我们直接对比下1.6.0和1.5.3之间的差异即可。</p>
-<p>![markdown](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/select.jpeg?raw=true "图片1")</p>
+        <h3 id="0x0-项目地址"><a href="#0x0-项目地址" class="headerlink" title="0x0 项目地址"></a>0x0 项目地址</h3><p><a href="https://github.com/apache/shiro" target="_blank" rel="noopener">https://github.com/apache/shiro</a></p>
+<h3 id="0x1-漏洞详情通告"><a href="#0x1-漏洞详情通告" class="headerlink" title="0x1 漏洞详情通告"></a>0x1 漏洞详情通告</h3><p>近日，蚂蚁非攻实验室发现针对之前Apache Shiro身份验证绕过漏洞CVE-2020-11989的修复补丁存在缺陷，在1.5.3及其之前的版本，由于shiro在处理url时与spring仍然存在差异，依然存在身份校验绕过漏洞。2020年8月17日，Apache Shiro官方接收漏洞报告并发布1.6.0修复版本，CVE编号：CVE-2020-13933</p>
+<h3 id="0x2-补丁分析"><a href="#0x2-补丁分析" class="headerlink" title="0x2 补丁分析"></a>0x2 补丁分析</h3><p>根据官方通告我们知道，漏洞是出现在1.5.3及之前版本中的，而在1.6.0中对其进行了修复。那么我们直接对比下1.6.0和1.5.3之间的差异即可。<br><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/select.jpeg?raw=true" alt="markdown" title="图片1"></p>
 <p>通过分析change log可以发现，这里是通过添加一个过滤器来阻止一些不合法的请求</p>
-<p>Adds new filter to block invalid requests</p>
-![markdown2](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/changeloginfo.jpeg?raw=true "图片2")
-对应的这个过滤器应该就是这个InvalidRequestFilter类了
-<p>web/src/main/java/org/apache/shiro/web/filter/InvalidRequestFilter.java</p>
-<p>![markdown2](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/patch.png?raw=true "图片2")</p>
-过滤类中针对分号和反斜杆进行了过滤
+Adds new filter to block invalid requests.
 
-<h3 id="调试环境配置"><a href="#调试环境配置" class="headerlink" title="调试环境配置"></a>调试环境配置</h3><p>根据补丁信息尝试进行payload构造。这里我们需要有一个调试环境。可通过网上已有的shiro结合spring的一个demo进行漏洞的复现。<br>demo地址:<a href="https://github.com/lenve/javaboy-code-samples/tree/master/shiro/shiro-basic" target="_blank" rel="noopener">https://github.com/lenve/javaboy-code-samples/tree/master/shiro/shiro-basic</a><br>这里需要对这个demo进行修改，具体改两个地方：<br>1、shiroconfig类</p>
+<p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/changeloginfo.jpeg?raw=true" alt="markdown" title="图片2"><br>对应的这个过滤器应该就是这个InvalidRequestFilter类了</p>
+<p>web/src/main/java/org/apache/shiro/web/filter/InvalidRequestFilter.java</p>
+
+<p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/patch.jpeg?raw=true" alt="markdown2" title="图片2"><br>过滤类中针对分号和反斜杆进行了过滤</p>
+<h3 id="0x3-调试环境配置"><a href="#0x3-调试环境配置" class="headerlink" title="0x3 调试环境配置"></a>0x3 调试环境配置</h3><p>根据补丁信息尝试进行payload构造。这里我们需要有一个调试环境。可通过网上已有的shiro结合spring的一个demo进行漏洞的复现。<br>demo地址:<a href="https://github.com/lenve/javaboy-code-samples/tree/master/shiro/shiro-basic" target="_blank" rel="noopener">https://github.com/lenve/javaboy-code-samples/tree/master/shiro/shiro-basic</a><br>这里需要对这个demo进行修改，具体改两个地方：<br>1、shiroconfig类</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function">ShiroFilterFactoryBean <span class="title">shiroFilterFactoryBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ShiroFilterFactoryBean bean = <span class="keyword">new</span> ShiroFilterFactoryBean();</span><br><span class="line">    <span class="comment">//指定 SecurityManager</span></span><br><span class="line">    bean.setSecurityManager(securityManager());</span><br><span class="line">    <span class="comment">//登录页面</span></span><br><span class="line">    bean.setLoginUrl(<span class="string">"/login"</span>);</span><br><span class="line">    <span class="comment">//登录成功页面</span></span><br><span class="line">    bean.setSuccessUrl(<span class="string">"/index"</span>);</span><br><span class="line">    <span class="comment">//访问未获授权路径时跳转的页面</span></span><br><span class="line">    bean.setUnauthorizedUrl(<span class="string">"/unauthorizedurl"</span>);</span><br><span class="line">    <span class="comment">//配置路径拦截规则，注意，要有序</span></span><br><span class="line">    Map&lt;String, String&gt; map = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">    <span class="comment">//map.put("/doLogin", "anon");</span></span><br><span class="line">    map.put(<span class="string">"/hello/*"</span>, <span class="string">"authc"</span>);</span><br><span class="line">    bean.setFilterChainDefinitionMap(map);</span><br><span class="line">    <span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>2、logincontroller类</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;&#x2F;hello&#x2F;&#123;name&#125;&quot;)</span><br><span class="line">public String hello(@PathVariable String name) &#123;</span><br><span class="line">    return &quot;hello&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -178,7 +176,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;shiro-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.5.3&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;shiro-spring&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.5.3&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 <p>4、重新编译一下项目</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip&#x3D;true</span><br></pre></td></tr></table></figure>
-<h3 id="调试分析"><a href="#调试分析" class="headerlink" title="调试分析"></a>调试分析</h3><p>这里需要注意下是，在调试的时候要记得设定intelij idea 自动导包，否则会发生使用之前版本的shiro，从而导致分析错误。</p>
+<h3 id="0x4-调试分析"><a href="#0x4-调试分析" class="headerlink" title="0x4 调试分析"></a>0x4 调试分析</h3><p>这里需要注意下是，在调试的时候要记得设定intelij idea 自动导包，否则会发生使用之前版本的shiro，从而导致分析错误。</p>
 <p>在处理uri的地方进行下断点，以便于分析shiro对于用户传入的uri地址是如何进行获取的。</p>
 <p>这里根据之前版本的漏洞调试经验，我们直接在getchain函数下断即可</p>
 通过前面的版本的漏洞分析我们知道，可以使用分号进行uri截断。</p>
@@ -189,14 +187,10 @@
 http://127.0.0.1:8080/hello/%3Bpony
 下面看调试过程
 首先来到shiro的getchain函数中</p>
-<p>![markdown](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/sirohandle.jpeg?raw=true "图片1")</p>
-可以看到这里对uri进行了截断，获取分号之前对内容，即/hello/。</p>
-接着来到spring的decodeandcleanuristring函数中
-<p>![markdown](https://github.com/zsdlove/zsdlove.github.io/blob/master/images/springhandle.jpeg?raw=true "图片1")</p>
-这里由于uri中对分号进行了编码，即%3B，从而bypass了removesemicolomcontent的截断，在decodeRequestString中对uri进行了解码，最终
-uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。
 
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>0x1 shiro对hello/%3Bpony进行了解码，获得hello/;pony,然后以分号为界限进行了截断，只剩下hello/，这里就绕过了shiro对权限校验。<br>0x2 spring在处理uri的时候，由于是先调用removesemicolomcontent函数对uri进行分析处理，如果存在分号则取分号前面的内容，然后再调用decodeRequestString进行解码的，所以这里就bypass过了spring的分号截断，从而使得最后的uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。<br>0x3 编码在bypass过程中还是很常用的。</p>
+<p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/shirohandle.jpeg?raw=true" alt="markdown" title="图片1"></p><br>可以看到这里对uri进行了截断，获取分号之前对内容，即/hello/。</p><br>接着来到spring的decodeandcleanuristring函数中</p>
+<p><img src="https://github.com/zsdlove/zsdlove.github.io/blob/master/images/springhanndle.jpeg?raw=true" alt="markdown" title="图片1"></p><br>这里由于uri中对分号进行了编码，即%3B，从而bypass了removesemicolomcontent的截断，在decodeRequestString中对uri进行了解码，最终<br>uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。</p>
+<h3 id="0x5-总结"><a href="#0x5-总结" class="headerlink" title="0x5 总结"></a>0x5 总结</h3><p>0x1 shiro对hello/%3Bpony进行了解码，获得hello/;pony,然后以分号为界限进行了截断，只剩下hello/，这里就绕过了shiro对权限校验。</p><br>0x2 spring在处理uri的时候，由于是先调用removesemicolomcontent函数对uri进行分析处理，如果存在分号则取分号前面的内容，然后再调用decodeRequestString进行解码的，所以这里就bypass过了spring的分号截断，从而使得最后的uri变为/hello/;pony符合spring中设置的路由规则，从而绕过了权限考验，访问到了期望内容。</p><br>0x3 编码在bypass过程中还是很常用的。</p>
 </p>
 
 
