@@ -113,7 +113,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -328,6 +328,438 @@
 <h1 id="七、知识星球"><a href="#七、知识星球" class="headerlink" title="七、知识星球"></a>七、知识星球</h1><p>如果阁下对静态代码分析也感兴趣，想长期在这个领域进行研究学习，欢迎加入我的知识星球，我将定期在知识星球里分享我在静态代码分析方面的实践思路，当然，在知识星球中的同学也将优先获取最新版本的Artemis代码安全扫描器的体验权。<br><img src="/images/image.png" alt="星球"></p>
 <h1 id="八、程序下载地址"><a href="#八、程序下载地址" class="headerlink" title="八、程序下载地址"></a>八、程序下载地址</h1><p><a target="_blank" rel="noopener" href="https://github.com/zsdlove/Artemis-release/releases/tag/v1.0.0">Artemis-release-v1.0.0</a></p>
 <h1 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pony@ponydeMBP 1.0.0 % java -jar Artemis.jar -h</span><br><span class="line">Usage: SAST [-hV] [-bc=&lt;build_cmd&gt;] [-d=&lt;dbpath&gt;] [-j=&lt;java_home&gt;]</span><br><span class="line">            [-mr=&lt;mr_enable&gt;] [-od=&lt;out_dbpath&gt;] [-p=&lt;path&gt;] [-r=&lt;rulePath&gt;]</span><br><span class="line">            [-t=&lt;mr_target_path&gt;]</span><br><span class="line">static code analysis.</span><br><span class="line">      -bc, --build-command=&lt;build_cmd&gt;</span><br><span class="line">                            指定编译命令.</span><br><span class="line">  -d, --database=&lt;dbpath&gt;   指定加载的数据库路径.</span><br><span class="line">  -h, --help                Show this help message and exit.</span><br><span class="line">  -j, --java-home=&lt;java_home&gt;</span><br><span class="line">                            指定java_home路径.</span><br><span class="line">      -mr, --mr-enable=&lt;mr_enable&gt;</span><br><span class="line">                            是否启用mr扫描.</span><br><span class="line">      -od, --output-database=&lt;out_dbpath&gt;</span><br><span class="line">                            指定输出的编译数据库路径.</span><br><span class="line">  -p, --path=&lt;path&gt;         指定源码路径.</span><br><span class="line">  -r, --rule=&lt;rulePath&gt;     指定规则路径.</span><br><span class="line">  -t, --mr-target-path=&lt;mr_target_path&gt;</span><br><span class="line">                            指定target数据库路径.</span><br><span class="line">  -V, --version             Print version information and exit.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://zsdlove.github.io/2025/03/10/Artemis-Documentation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="pOny">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="pOny's blog">
+      <meta itemprop="description" content="安全扫描技术分享">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | pOny's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/10/Artemis-Documentation/" class="post-title-link" itemprop="url">Artemis Documentation</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2025-03-10 20:50:06 / Modified: 22:46:27" itemprop="dateCreated datePublished" datetime="2025-03-10T20:50:06+08:00">2025-03-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h1><h2 id="获取软件最新版本"><a href="#获取软件最新版本" class="headerlink" title="获取软件最新版本"></a>获取软件最新版本</h2><p>用户可从<a target="_blank" rel="noopener" href="https://github.com/zsdlove/Artemis-release/releases/">https://github.com/zsdlove/Artemis-release/releases/</a> 下载最新的Artemis扫描器。</p>
+<h2 id="配置清单"><a href="#配置清单" class="headerlink" title="配置清单"></a>配置清单</h2><p>Artemis 代码安全扫描器包含主体引擎Artemis.jar和两个配置文件Checker.xml和build.properties。其中，Checker.xml中包含扫描器内置规则以及用户自定义规则；build.properties包含编译配置，以及其他的一些扫描器必要的运行时配置。</p>
+<h2 id="环境依赖"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖</h2><ul>
+<li>Artemis依赖jdk11之后的所有版本，请确保运行环境中的jdk大于jdk11。</li>
+<li>编译捕获所需的jdk可通过命令行参数或配置文件另外配置，如果没有配置，则默认继承Artemis运行环境所以依赖的jdk版本。</li>
+</ul>
+<h1 id="Quickstart"><a href="#Quickstart" class="headerlink" title="Quickstart"></a>Quickstart</h1><h2 id="基本原理说明"><a href="#基本原理说明" class="headerlink" title="基本原理说明"></a>基本原理说明</h2><p>Artemis代码分析主要分两步，第一步是进行代码编译捕获，第二步是进行代码扫描分析。其中第一步需要将代码转换为中间语义文件*.art，第二步则使用指定规则对捕获的语义文件进行分析。</p>
+<h2 id="基本使用说明"><a href="#基本使用说明" class="headerlink" title="基本使用说明"></a>基本使用说明</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pony@ponydeMBP 1.0.0 % java -jar Artemis.jar -h</span><br><span class="line">Usage: SAST [-hV] [-bc=&lt;build_cmd&gt;] [-d=&lt;dbpath&gt;] [-j=&lt;java_home&gt;]</span><br><span class="line">            [-mr=&lt;mr_enable&gt;] [-od=&lt;out_dbpath&gt;] [-p=&lt;path&gt;] [-r=&lt;rulePath&gt;]</span><br><span class="line">            [-t=&lt;mr_target_path&gt;]</span><br><span class="line">static code analysis.</span><br><span class="line">      -bc, --build-command=&lt;build_cmd&gt;</span><br><span class="line">                            指定编译命令.</span><br><span class="line">  -d, --database=&lt;dbpath&gt;   指定加载的数据库路径.</span><br><span class="line">  -h, --help                Show this help message and exit.</span><br><span class="line">  -j, --java-home=&lt;java_home&gt;</span><br><span class="line">                            指定java_home路径.</span><br><span class="line">      -mr, --mr-enable=&lt;mr_enable&gt;</span><br><span class="line">                            是否启用mr扫描.</span><br><span class="line">      -od, --output-database=&lt;out_dbpath&gt;</span><br><span class="line">                            指定输出的编译数据库路径.</span><br><span class="line">  -p, --path=&lt;path&gt;         指定源码路径.</span><br><span class="line">  -r, --rule=&lt;rulePath&gt;     指定规则路径.</span><br><span class="line">  -t, --mr-target-path=&lt;mr_target_path&gt;</span><br><span class="line">                            指定target数据库路径.</span><br><span class="line">  -V, --version             Print version information and exit.</span><br></pre></td></tr></table></figure>
+<h2 id="靶场示例"><a href="#靶场示例" class="headerlink" title="靶场示例"></a>靶场示例</h2><p><a target="_blank" rel="noopener" href="https://github.com/JoyChou93/java-sec-code.git">https://github.com/JoyChou93/java-sec-code.git</a><br>这个靶场做得还是比较用心的，一直以来测试都是用的这个靶场。</p>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><p>java-sec-code编译依赖jdk1.8，所以我们需要在build.properties配置文件中指定java8环境配置指定如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">java_home = /Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home</span><br><span class="line">report_output=report.json</span><br><span class="line">build_cmd= mvn clean package -X -DskipTests=true</span><br><span class="line">out_dir=workspace</span><br><span class="line">model_name=deepseek-ai/DeepSeek-V2.5</span><br><span class="line">max_token=512</span><br><span class="line">temperature=0.7</span><br><span class="line">top_p=0.7</span><br><span class="line">top_k=50</span><br><span class="line">frequency_penalty=0.5</span><br><span class="line">n=1</span><br><span class="line">model_api=https://api.siliconflow.cn/v1/chat/completions</span><br><span class="line">licenseData=Licensed to: pOny, Expires: 2025-4-31</span><br><span class="line">publicKey=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxidJDQRCW3aITgFN5vVF4tuaMu85igETA+cR4Pg//+aJfpjockyvAmdEiz0fKOlm+HyXDDGSzuzVgtf4MFEEI+I/UeON2BstGqE0kQd4KLs7+MbzmDttVzixVICl4i57LBHbh3Ef7ZwALknvhURH5XaZpqlIobSiiphf12uoFALK7sMfQDq0KFlkZnmvydDoF8leqqoh5wVwaA/0kKjrWH0pUu+x/l7EVxyqCsEXKdd2WYOE6zxfDxQkbBGYCjZ8W6AUQygy0T9/qXZRy4g16dN99TbnrcKTts8p1fMTOZgj9lEHtKaaDs8HvQa0CkHF1iCV6WI/5gWF9K9S4ZafwQIDAQAB</span><br><span class="line">signature=T1kqV8LWUhLd2rTtyROpgYx30tGFQDnoQCicQUXvvwWqf9uyD/dvx6ivVZua2LZHbxUU85WtryRA25AGeMvXaG9KVpWYeUwnUbG4lx/w3D0eWFcoloTmRdeYgYl9q9OxhR+n7CH5CoveghZU05ZGqIlLxeglrbnlCNB8n8J1NHVxMyvpTBl9vYxfx39WyvSTIytwXZb4vnwWXQVbUwdVmuHQuKHfpPBf0W1VnvQ/p3WDgRyAbL0v2e2eITMd7SGSU/9VC23kZjCy8p/cSNZ/VivEth6BFW1k52Gis4alNR9OZUbMsgrYcpo6ORCL+gOAU1RQiO+spffPhBipa9u4gg==</span><br></pre></td></tr></table></figure>
+<p>编译命令指定为mvn clean package -X -DskipTests&#x3D;true，其他默认即可。下面指定以下命令开启编译</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>执行以下命令进行编译捕获</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar Artemis.jar -p test/java-sec-code-master</span><br></pre></td></tr></table></figure>
+<p>如果你实现编译过，本地已经有依赖包缓存了，那这个捕获过程大概耗时10秒，如果没有编译过，那这个过程可能会耗时稍稍多一些。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>下面我们开始进行漏洞分析，我们直接执行以下命令即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar Artemis.jar -d workspace</span><br></pre></td></tr></table></figure>
+<p>其中，workspace是我们指定的数据库保存的目录。<br><img src="/images/p6.png" alt="demo-scan"><br>可以看到这个过程大概耗时6秒，对于一些注入java-sec-code-master这样小型的项目，Artemis的分析速度极快，如果再配合上mr扫描，那速度将会相当令人欣喜。</p>
+<h1 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h1><h2 id="节点描述"><a href="#节点描述" class="headerlink" title="节点描述"></a>节点描述</h2><table>
+<thead>
+<tr>
+<th>节点</th>
+<th>说明</th>
+<th>如何获取</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YieldStmt</td>
+<td>yield语句</td>
+<td>示例：db.nodes.where(_.getClass.getSimpleName&#x3D;&#x3D;”YieldStmt”)</td>
+</tr>
+<tr>
+<td>MethodCallReferenceExpr</td>
+<td>方法引用语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ArrayAccessExpr</td>
+<td>数组访问表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ConditionExpr</td>
+<td>条件表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>AssignExpr</td>
+<td>赋值表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>BreakStmt</td>
+<td>break语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>BooleanLiteralExpr</td>
+<td>布尔表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>DoStmt</td>
+<td>do语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>SwitchExpr</td>
+<td>switch语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>LambdaExpr</td>
+<td>lambda表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>AnnotationStmt</td>
+<td>注解语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>NullLiteralExpr</td>
+<td>空值表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ReturnStmt</td>
+<td>返回语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ThrowStmt</td>
+<td>throw语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>NameExpr</td>
+<td>名字表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>BlockStmt</td>
+<td>基本块</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>LongLiteralExpr</td>
+<td>长整型表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>CastExpr</td>
+<td>强制转换表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>TypeDecl</td>
+<td>类型声明</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>FieldAccessExpr</td>
+<td>字段访问表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>MethodDecl</td>
+<td>函数声明</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ForStmt</td>
+<td>for语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ForeachStmt</td>
+<td>foreach语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>WhileStmt</td>
+<td>while语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>IntegerLiteralExpr</td>
+<td>整型值表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>VariableDeclarator</td>
+<td>变量声明者</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>CatchClause</td>
+<td>catchclause声明</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>IfStmt</td>
+<td>if语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ObjectCreationExpr</td>
+<td>对象创建</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ParameterStmt</td>
+<td>参数语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ExprStmt</td>
+<td>表达式语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>SwitchStmt</td>
+<td>switch语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>BinaryExpr</td>
+<td>binary表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ArrayInitializerExpr</td>
+<td>数组初始化表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>DoubleLiteralExpr</td>
+<td>Double值表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>CallExpr</td>
+<td>函数调用表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>TryStmt</td>
+<td>try语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>FinallyStmt</td>
+<td>finally语句</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>VariableDecExpr</td>
+<td>变量声明表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>TypeExpr</td>
+<td>类型表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>ArrayCreateExpr</td>
+<td>数组创建表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>SwitchEntry</td>
+<td>switch入口</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>StringLiteralExpr</td>
+<td>字符串值表达式</td>
+<td>类似第一个示例</td>
+</tr>
+<tr>
+<td>XMLNode</td>
+<td>xml节点</td>
+<td>类似第一个示例</td>
+</tr>
+</tbody></table>
+<h2 id="节点基本属性描述"><a href="#节点基本属性描述" class="headerlink" title="节点基本属性描述"></a>节点基本属性描述</h2><p>每一个节点的最终父类都是AST，其中，AST的基本数据结构如下</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>int</td>
+<td>节点编号，具有唯一性</td>
+</tr>
+<tr>
+<td>code</td>
+<td>sting</td>
+<td>节点代码</td>
+</tr>
+<tr>
+<td>start_line</td>
+<td>int</td>
+<td>节点起始行</td>
+</tr>
+<tr>
+<td>end_line</td>
+<td>int</td>
+<td>节点结束行</td>
+</tr>
+<tr>
+<td>parent</td>
+<td>int</td>
+<td>父节点</td>
+</tr>
+<tr>
+<td>filePath</td>
+<td>string</td>
+<td>文件路径</td>
+</tr>
+<tr>
+<td>method_id</td>
+<td>int</td>
+<td>节点所在函数</td>
+</tr>
+</tbody></table>
+<h1 id="Basic-Usages"><a href="#Basic-Usages" class="headerlink" title="Basic Usages"></a>Basic Usages</h1><h2 id="关键词使用说明"><a href="#关键词使用说明" class="headerlink" title="关键词使用说明"></a>关键词使用说明</h2><table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>db</td>
+<td>数据库，所有的数据都从这来</td>
+<td></td>
+</tr>
+<tr>
+<td>call</td>
+<td>函数调用</td>
+<td>db.call</td>
+</tr>
+<tr>
+<td>method</td>
+<td>函数声明</td>
+<td>db.method</td>
+</tr>
+<tr>
+<td>types</td>
+<td>类型声明</td>
+<td>db.types</td>
+</tr>
+<tr>
+<td>xml</td>
+<td>xml文件信息</td>
+<td>db.xml</td>
+</tr>
+<tr>
+<td>where</td>
+<td>条件判断</td>
+<td>db.call.where(_.name&#x3D;&#x3D;”niceshot”)</td>
+</tr>
+<tr>
+<td>whereNot</td>
+<td>条件判断</td>
+<td>db.call.whereNot(_.name&#x3D;&#x3D;”nicejob”)</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>条件过滤</td>
+<td>db.call.filter(_.name&#x3D;&#x3D;”nicejob”)</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>枚举限制，限制获取的节点数量</td>
+<td>db.call.limit(10)</td>
+</tr>
+<tr>
+<td>methodDeclaration</td>
+<td>获取函数调用对应的函数声明信息</td>
+<td>callExpr.methodDeclaration</td>
+</tr>
+<tr>
+<td>hasPathTo</td>
+<td>污点路径追踪</td>
+<td>sink.hasPathTo(source)</td>
+</tr>
+</tbody></table>
+<h1 id="Rule-Develop"><a href="#Rule-Develop" class="headerlink" title="Rule Develop"></a>Rule Develop</h1><p>以下是一个sql注入检测规则的示例，阁下可仿造此规则编写其他漏洞检测规则，编写的规则放置在Checker.xml的customize-rules节点下即可。规则编号你可以自定义，不过，如果自定义编号的话，你需要补充这个编号对应的描述信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">val sources:List[ParameterStmt]= db.method</span><br><span class="line">    .where(_.annotation.nonEmpty)</span><br><span class="line">    .where &#123;</span><br><span class="line">      it =&gt; &#123;</span><br><span class="line">        it.annotation.count(_.code.contains(&quot;RequestMapping&quot;))&gt;0</span><br><span class="line">          || it.annotation.count(_.code.contains(&quot;GetMapping&quot;))&gt;0</span><br><span class="line">          || it.annotation.count(_.code.contains(&quot;ResponseBody&quot;))&gt;0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    .filter(_.params.nonEmpty).map(_.params.head)</span><br><span class="line">val sink:List[Expr]=db.call.where&#123;</span><br><span class="line">      it=&gt;&#123;</span><br><span class="line">        it.fullName==&quot;java.sql.Statement.executeQuery&quot;</span><br><span class="line">        || it.fullName==&quot;java.sql.Statement.addBatch&quot;</span><br><span class="line">        || it.fullName==&quot;java.sql.Statement.execute&quot;</span><br><span class="line">        || it.fullName==&quot;java.sql.Statement.executeLargeUpdate&quot;</span><br><span class="line">        || it.fullName==&quot;java.sql.Statement.executeUpdate&quot;</span><br><span class="line">        || it.fullName==&quot;java.sql.Statement.executeBatch&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;.filter(_.arguments.nonEmpty).map(_.arguments.head)</span><br><span class="line">val paths=sink.hashPathTo(sources)</span><br><span class="line">paths.show //打印路径</span><br><span class="line">paths.num //统计路径数量</span><br></pre></td></tr></table></figure>
+<p>注意事项：</p>
+<ul>
+<li>注意规则每一行规则代码都需要加上<code>&lt;br&gt;</code>进行换行，否则后端规则编译器会编译异常。</li>
+<li>规则需要使用cdata节点进行包裹，以避免规则中的关键词对xml的解析产生影响。</li>
+</ul>
 
       
     </div>
