@@ -257,7 +257,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-03-11 21:53:37" itemprop="dateModified" datetime="2025-03-11T21:53:37+08:00">2025-03-11</time>
+      <time title="Modified: 2025-03-11 22:10:33" itemprop="dateModified" datetime="2025-03-11T22:10:33+08:00">2025-03-11</time>
     </span>
 
   
@@ -284,284 +284,80 @@
 <p>编译命令指定为mvn clean package -X -DskipTests&#x3D;true，其他默认即可。下面指定以下命令开启编译</p>
 <h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>执行以下命令进行编译捕获</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar Artemis.jar -p test/java-sec-code-master</span><br></pre></td></tr></table></figure>
-<p><video src="/images/编译.mov" controls="controls"></video><br>如果你实现编译过，本地已经有依赖包缓存了，那这个捕获过程大概耗时10秒，如果没有编译过，那这个过程可能会耗时稍稍多一些。</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>下面我们开始进行漏洞分析，我们直接执行以下命令即可：</p>
+<details>
+  <summary>编译执行实战</summary>
+  <video src="/images/编译.mov" controls="controls"></video>
+</details>
+如果你实现编译过，本地已经有依赖包缓存了，那这个捕获过程大概耗时10秒，如果没有编译过，那这个过程可能会耗时稍稍多一些。
+### 分析
+下面我们开始进行漏洞分析，我们直接执行以下命令即可：
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar Artemis.jar -d workspace</span><br></pre></td></tr></table></figure>
-<p>其中，workspace是我们指定的数据库保存的目录。<br><video src="/images/分析.mov" controls="controls"></video><br>可以看到这个过程大概耗时6秒，对于一些诸如java-sec-code-master这样小型的项目，Artemis的分析速度极快，如果再配合上mr扫描，那速度将会相当令人欣喜。</p>
-<h1 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h1><h2 id="节点描述"><a href="#节点描述" class="headerlink" title="节点描述"></a>节点描述</h2><table>
-<thead>
-<tr>
-<th>节点</th>
-<th>说明</th>
-<th>如何获取</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>YieldStmt</td>
-<td>yield语句</td>
-<td>示例：db.nodes.where(_.getClass.getSimpleName&#x3D;&#x3D;”YieldStmt”)</td>
-</tr>
-<tr>
-<td>MethodCallReferenceExpr</td>
-<td>方法引用语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ArrayAccessExpr</td>
-<td>数组访问表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ConditionExpr</td>
-<td>条件表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>AssignExpr</td>
-<td>赋值表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>BreakStmt</td>
-<td>break语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>BooleanLiteralExpr</td>
-<td>布尔表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>DoStmt</td>
-<td>do语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>SwitchExpr</td>
-<td>switch语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>LambdaExpr</td>
-<td>lambda表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>AnnotationStmt</td>
-<td>注解语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>NullLiteralExpr</td>
-<td>空值表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ReturnStmt</td>
-<td>返回语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ThrowStmt</td>
-<td>throw语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>NameExpr</td>
-<td>名字表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>BlockStmt</td>
-<td>基本块</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>LongLiteralExpr</td>
-<td>长整型表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>CastExpr</td>
-<td>强制转换表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>TypeDecl</td>
-<td>类型声明</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>FieldAccessExpr</td>
-<td>字段访问表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>MethodDecl</td>
-<td>函数声明</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ForStmt</td>
-<td>for语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ForeachStmt</td>
-<td>foreach语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>WhileStmt</td>
-<td>while语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>IntegerLiteralExpr</td>
-<td>整型值表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>VariableDeclarator</td>
-<td>变量声明者</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>CatchClause</td>
-<td>catchclause声明</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>IfStmt</td>
-<td>if语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ObjectCreationExpr</td>
-<td>对象创建</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ParameterStmt</td>
-<td>参数语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ExprStmt</td>
-<td>表达式语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>SwitchStmt</td>
-<td>switch语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>BinaryExpr</td>
-<td>binary表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ArrayInitializerExpr</td>
-<td>数组初始化表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>DoubleLiteralExpr</td>
-<td>Double值表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>CallExpr</td>
-<td>函数调用表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>TryStmt</td>
-<td>try语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>FinallyStmt</td>
-<td>finally语句</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>VariableDecExpr</td>
-<td>变量声明表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>TypeExpr</td>
-<td>类型表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>ArrayCreateExpr</td>
-<td>数组创建表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>SwitchEntry</td>
-<td>switch入口</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>StringLiteralExpr</td>
-<td>字符串值表达式</td>
-<td>类似第一个示例</td>
-</tr>
-<tr>
-<td>XMLNode</td>
-<td>xml节点</td>
-<td>类似第一个示例</td>
-</tr>
-</tbody></table>
-<h2 id="节点基本属性描述"><a href="#节点基本属性描述" class="headerlink" title="节点基本属性描述"></a>节点基本属性描述</h2><p>每一个节点的最终父类都是AST，其中，AST的基本数据结构如下</p>
-<table>
-<thead>
-<tr>
-<th>属性</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>id</td>
-<td>int</td>
-<td>节点编号，具有唯一性</td>
-</tr>
-<tr>
-<td>code</td>
-<td>sting</td>
-<td>节点代码</td>
-</tr>
-<tr>
-<td>start_line</td>
-<td>int</td>
-<td>节点起始行</td>
-</tr>
-<tr>
-<td>end_line</td>
-<td>int</td>
-<td>节点结束行</td>
-</tr>
-<tr>
-<td>parent</td>
-<td>int</td>
-<td>父节点</td>
-</tr>
-<tr>
-<td>filePath</td>
-<td>string</td>
-<td>文件路径</td>
-</tr>
-<tr>
-<td>method_id</td>
-<td>int</td>
-<td>节点所在函数</td>
-</tr>
-</tbody></table>
+其中，workspace是我们指定的数据库保存的目录。
+<details>
+  <summary>分析执行实战</summary>
+  <video src="/images/分析.mov" controls="controls"></video>
+</details>
+可以看到这个过程大概耗时6秒，对于一些诸如java-sec-code-master这样小型的项目，Artemis的分析速度极快，如果再配合上mr扫描，那速度将会相当令人欣喜。
+# Database
+## 节点描述
+|  节点   | 说明  | 如何获取 |
+|  ----  | ----  | ----   |
+|YieldStmt| yield语句|示例：db.nodes.where(_.getClass.getSimpleName=="YieldStmt")|
+|MethodCallReferenceExpr|方法引用语句|类似第一个示例|
+|ArrayAccessExpr|数组访问表达式|类似第一个示例|
+|ConditionExpr|条件表达式|类似第一个示例|
+|AssignExpr|赋值表达式|类似第一个示例|
+|BreakStmt|break语句|类似第一个示例|
+|BooleanLiteralExpr|布尔表达式|类似第一个示例|
+|DoStmt|do语句|类似第一个示例|
+|SwitchExpr|switch语句|类似第一个示例|
+|LambdaExpr|lambda表达式|类似第一个示例|
+|AnnotationStmt|注解语句|类似第一个示例|
+|NullLiteralExpr|空值表达式|类似第一个示例|
+|ReturnStmt|返回语句|类似第一个示例|
+|ThrowStmt|throw语句|类似第一个示例|
+|NameExpr|名字表达式|类似第一个示例|
+|BlockStmt|基本块|类似第一个示例|
+|LongLiteralExpr|长整型表达式|类似第一个示例|
+|CastExpr|强制转换表达式|类似第一个示例|
+|TypeDecl|类型声明|类似第一个示例|
+|FieldAccessExpr|字段访问表达式|类似第一个示例|
+|MethodDecl|函数声明|类似第一个示例|
+|ForStmt|for语句|类似第一个示例|
+|ForeachStmt|foreach语句|类似第一个示例|
+|WhileStmt|while语句|类似第一个示例|
+|IntegerLiteralExpr|整型值表达式|类似第一个示例|
+|VariableDeclarator|变量声明者|类似第一个示例|
+|CatchClause|catchclause声明|类似第一个示例|
+|IfStmt|if语句|类似第一个示例|
+|ObjectCreationExpr|对象创建|类似第一个示例|
+|ParameterStmt|参数语句|类似第一个示例|
+|ExprStmt|表达式语句|类似第一个示例|
+|SwitchStmt|switch语句|类似第一个示例|
+|BinaryExpr|binary表达式|类似第一个示例|
+|ArrayInitializerExpr|数组初始化表达式|类似第一个示例|
+|DoubleLiteralExpr|Double值表达式|类似第一个示例|
+|CallExpr|函数调用表达式|类似第一个示例|
+|TryStmt|try语句|类似第一个示例|
+|FinallyStmt|finally语句|类似第一个示例|
+|VariableDecExpr|变量声明表达式|类似第一个示例|
+|TypeExpr|类型表达式|类似第一个示例|
+|ArrayCreateExpr|数组创建表达式|类似第一个示例|
+|SwitchEntry|switch入口|类似第一个示例|
+|StringLiteralExpr|字符串值表达式|类似第一个示例|
+|XMLNode|xml节点|类似第一个示例|
+## 节点基本属性描述
+每一个节点的最终父类都是AST，其中，AST的基本数据结构如下
+|  属性   |类型| 说明  |
+| ----   | ----  | ----   |
+| id     |int|节点编号，具有唯一性|
+| code   |sting|节点代码|
+| start_line|int|节点起始行|
+| end_line|int|节点结束行
+| parent|int|父节点|
+| filePath|string|文件路径
+| method_id|int|节点所在函数|
+
 <h1 id="Basic-Usages"><a href="#Basic-Usages" class="headerlink" title="Basic Usages"></a>Basic Usages</h1><h2 id="关键词使用说明"><a href="#关键词使用说明" class="headerlink" title="关键词使用说明"></a>关键词使用说明</h2><table>
 <thead>
 <tr>
