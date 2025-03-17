@@ -257,7 +257,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-03-11 22:32:20" itemprop="dateModified" datetime="2025-03-11T22:32:20+08:00">2025-03-11</time>
+      <time title="Modified: 2025-03-18 02:46:27" itemprop="dateModified" datetime="2025-03-18T02:46:27+08:00">2025-03-18</time>
     </span>
 
   
@@ -651,6 +651,21 @@
 <li>注意规则每一行规则代码都需要加上<code>&lt;br&gt;</code>进行换行，否则后端规则编译器会编译异常。</li>
 <li>规则需要使用cdata节点进行包裹，以避免规则中的关键词对xml的解析产生影响。</li>
 </ul>
+<h1 id="online-query"><a href="#online-query" class="headerlink" title="online query"></a>online query</h1><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>从1.1.0版本起，artemis支持在线query。可通过以下命令启动一个query服务器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar Artemis.jar -d [path/to/database] -sp 8089</span><br></pre></td></tr></table></figure>
+<p>（注：sp指定端口号）</p>
+<h2 id="接口请求示例"><a href="#接口请求示例" class="headerlink" title="接口请求示例"></a>接口请求示例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8089/query?data=db.method.last.fullname</span><br></pre></td></tr></table></figure>
+<p>其中，data参数后面跟我们query的语句</p>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><details>
+  <summary>启动服务器演示</summary>
+  <video src="/images/启动服务.mov" controls="controls"></video>
+</details>
+
+<h3 id="在线query"><a href="#在线query" class="headerlink" title="在线query"></a>在线query</h3><details>
+  <summary>在线query演示</summary>
+  <video src="/images/在线query.mov" controls="controls"></video>
+</details>
+
 
       
     </div>
